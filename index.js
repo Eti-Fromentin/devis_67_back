@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const { SERVER_PORT } = require('./env');
+const SERVER_PORT = 8000;
+const { setupRoutes } = require('./Router');
 
 const app = express();
 
@@ -8,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/*setupRoutes(app);*/
+setupRoutes(app);
 
 const server = app.listen(SERVER_PORT, () => {
   console.log(`Server is listening on : ${SERVER_PORT}`);
