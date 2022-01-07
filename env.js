@@ -1,7 +1,7 @@
 require('dotenv').config();
 
-const getEnv = (varibale) => {
-  const value = process.env[varibale];
+const getEnv = (variable) => {
+  const value = process.env[variable];
   return value;
 };
 

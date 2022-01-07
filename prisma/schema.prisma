@@ -1,0 +1,256 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model categories_devis_provider {
+  id                     Int                      @id @default(autoincrement())
+  status                 Int
+  position               Int
+  alias                  String                   @db.VarChar(255)
+  parent                 Int
+  title                  String                   @db.VarChar(255)
+  description            String                   @db.Text
+  pages_id               Int?
+  pages                  pages?                   @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "categories_devis_provider_pages_id")
+  devis                  devis[]
+  formulaire_devis       formulaire_devis[]
+  provider_join_category provider_join_category[]
+  top_ten                top_ten[]
+
+  @@index([pages_id], map: "categories_pages_id_idx")
+}
+
+model conditions {
+  id            Int    @id @default(autoincrement())
+  text_category String @db.VarChar(45)
+  text          String @db.VarChar(255)
+  position      Int
+  visible       Int
+  pages_id      Int?
+  pages         pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "conditions_pages_id")
+
+  @@index([pages_id])
+}
+
+model contact {
+  id            Int    @id @default(autoincrement())
+  text_category String @db.VarChar(45)
+  text          String @db.VarChar(255)
+  position      Int
+  visible       Int
+  pages_id      Int?
+  pages         pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contact_pages_id")
+
+  @@index([pages_id])
+}
+
+model devis {
+  id                        Int                       @id @default(autoincrement())
+  user_id                   Int
+  category_id               Int
+  status                    Int
+  type                      Int
+  goal                      Int
+  objective                 Int
+  details                   String?                   @db.VarChar(1000)
+  categories_devis_provider categories_devis_provider @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_asked_devis_category")
+  user                      user                      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_asked_devis_user")
+  questions_anwers          questions_anwers[]
+
+  @@index([category_id], map: "fk_asked_devis_category_idx")
+  @@index([user_id], map: "fk_devis_user1_idx")
+}
+
+model faq {
+  id       Int    @id @default(autoincrement())
+  position Int
+  visible  Int
+  question String @db.VarChar(255)
+  answer   String @db.VarChar(255)
+  pages_id Int?
+  pages    pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "faq_pages_id")
+
+  @@index([pages_id])
+}
+
+model footer {
+  id       Int    @id @default(autoincrement())
+  category String @db.VarChar(10)
+  visible  Int
+  text     String @db.VarChar(45)
+  pages_id Int?
+  position Int
+  pages    pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "footer_pages_id")
+
+  @@index([pages_id], map: "fk_pages_id_idx")
+}
+
+model formulaire_devis {
+  id                        Int                       @id @default(autoincrement())
+  category_id               Int
+  type_question             String                    @db.VarChar(45)
+  question                  String                    @db.VarChar(100)
+  categories_devis_provider categories_devis_provider @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "formulaire_devis_category_id")
+  formulaire_join_answer    formulaire_join_answer[]
+
+  @@index([category_id])
+}
+
+model formulaire_join_answer {
+  id                         Int                        @id @default(autoincrement())
+  formulaire_id              Int
+  answer_id                  Int
+  formulaire_possible_answer formulaire_possible_answer @relation(fields: [answer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_formulaire_join_answer_2")
+  formulaire_devis           formulaire_devis           @relation(fields: [formulaire_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_formulaire_join_answer_1")
+
+  @@index([formulaire_id], map: "fk_formulaire_join_answer_1_idx")
+  @@index([answer_id], map: "fk_formulaire_join_answer_2_idx")
+}
+
+model formulaire_possible_answer {
+  id                     Int                      @id @default(autoincrement())
+  answer                 String                   @db.VarChar(255)
+  formulaire_join_answer formulaire_join_answer[]
+}
+
+model home_devis {
+  id            Int    @id @default(autoincrement())
+  text_category String @db.VarChar(45)
+  text          String @db.VarChar(255)
+  position      Int
+  visible       Int
+  page_section  String @db.VarChar(45)
+  pages_id      Int?
+  pages         pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "home_devis_pages_id")
+
+  @@index([pages_id])
+}
+
+model legal {
+  id            Int    @id @default(autoincrement())
+  text_category String @db.VarChar(45)
+  position      Int
+  visible       Int
+  text          String @db.VarChar(255)
+  pages_id      Int?
+  pages         pages? @relation(fields: [pages_id], references: [id], onDelete: Cascade, map: "legal_pages_id")
+
+  @@index([pages_id])
+}
+
+model messages {
+  id         Int      @id @default(autoincrement())
+  subject    String   @db.VarChar(45)
+  text       String   @db.VarChar(1000)
+  created_at DateTime @db.DateTime(0)
+  user_id    Int
+  user       user     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "message_user_id")
+
+  @@index([user_id], map: "message_user_id_idx")
+}
+
+model navbar {
+  id       Int    @id @default(autoincrement())
+  position Int
+  text     String @db.VarChar(45)
+  visible  Int
+  pages_id Int?
+  pages    pages? @relation(fields: [pages_id], references: [id], onDelete: Cascade, map: "navbar_pages_id")
+
+  @@index([pages_id], map: "fk_pages_id_idx")
+}
+
+model notice {
+  id            Int    @id @default(autoincrement())
+  text_category String @db.VarChar(45)
+  text          String @db.VarChar(255)
+  position      Int
+  visible       Int
+  pages_id      Int?
+  pages         pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "notice_pages_id")
+
+  @@index([pages_id])
+}
+
+model pages {
+  id                        Int                         @id @default(autoincrement())
+  status                    Int
+  url                       String                      @db.VarChar(255)
+  title                     String                      @db.VarChar(255)
+  description               String?                     @db.Text
+  keywords                  String?                     @db.Text
+  categories_devis_provider categories_devis_provider[]
+  conditions                conditions[]
+  contact                   contact[]
+  faq                       faq[]
+  footer                    footer[]
+  home_devis                home_devis[]
+  legal                     legal[]
+  navbar                    navbar[]
+  notice                    notice[]
+}
+
+model provider {
+  id                     Int                      @id @default(autoincrement())
+  status                 Int
+  type                   Int
+  name                   String                   @db.VarChar(255)
+  contact_name           String                   @db.VarChar(255)
+  address                String                   @db.VarChar(45)
+  phone                  Int?
+  email                  String                   @db.VarChar(255)
+  zipcode                Int
+  city                   String                   @db.VarChar(255)
+  provider_join_category provider_join_category[]
+}
+
+model provider_join_category {
+  id                        Int                       @id
+  provider_id               Int
+  category_id               Int
+  categories_devis_provider categories_devis_provider @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_provider_category")
+  provider                  provider                  @relation(fields: [provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_category_provider")
+
+  @@index([category_id], map: "fk_provider_category_idx")
+  @@index([provider_id], map: "fk_provider_has_category_provider1_idx")
+}
+
+model questions_anwers {
+  id        Int    @id @default(autoincrement())
+  questions String @db.VarChar(100)
+  answers   String @db.VarChar(255)
+  devis_id  Int
+  devis     devis  @relation(fields: [devis_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "question_devis_id")
+
+  @@index([devis_id], map: "question_devis_id_idx")
+}
+
+model top_ten {
+  id                        Int                        @id @default(autoincrement())
+  position                  Int
+  visible                   Int
+  category_id               Int?
+  categories_devis_provider categories_devis_provider? @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "top_ten_category_id")
+
+  @@index([category_id])
+}
+
+model user {
+  id             Int        @id @default(autoincrement())
+  firstname      String     @db.VarChar(45)
+  lastname       String     @db.VarChar(45)
+  mail           String     @db.VarChar(60)
+  phone          Int?
+  address        String?    @db.VarChar(100)
+  postal_code    Int        @map("postal-code")
+  city           String     @db.VarChar(100)
+  hashedpassword String     @db.VarChar(45)
+  status         Int        @default(0)
+  devis          devis[]
+  messages       messages[]
+}
