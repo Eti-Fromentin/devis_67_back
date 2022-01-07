@@ -1,13 +1,14 @@
-const { findAll } = require('../Model/footerModel');
+const { findAllVisible } = require('../Model/footerModel');
 
-const getAll = async (req, res) => {
+const getAllVisible = async (req, res) => {
   try {
-    const data = await findAll();
+    const data = await findAllVisible();
     res.status(200).json(data);
+    console.log(data);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Internal server error');
   }
 };
 
-module.exports = { getAll };
+module.exports = { getAllVisible };

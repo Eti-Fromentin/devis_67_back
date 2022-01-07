@@ -1,8 +1,22 @@
-const mysql = require('../db');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-const findAll = async () => {
-  const result = await mysql.query('SELECT * FROM navbar');
-  return result[0];
+const findAllVisible = async () => {
+  const result = await prisma.footer.findMany({
+    select: {
+      text: true,
+      position: true,
+      pages: {
+        select: {
+          url: true,
+        },
+      },
+    },
+    where: {
+      visible: 1,
+    },
+  });
+  return result;
 };
 
-module.exports = findAll;
+module.exports = { findAllVisible };

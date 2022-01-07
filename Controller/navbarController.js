@@ -1,8 +1,8 @@
-const { findAll } = require('../Model/navbarModel');
+const { findAllVisible } = require('../Model/navbarModel');
 
-const getAll = async (req, res) => {
+const getAllVisible = async (req, res) => {
   try {
-    const data = await findAll();
+    const data = await findAllVisible();
     res.status(200).json(data);
   } catch (err) {
     console.error(err.message);
@@ -10,4 +10,4 @@ const getAll = async (req, res) => {
   }
 };
 
-module.exports = getAll;
+module.exports = { getAllVisible };

@@ -84,6 +84,7 @@ model footer {
   visible  Int
   text     String @db.VarChar(45)
   pages_id Int?
+  position Int
   pages    pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "footer_pages_id")
 
   @@index([pages_id], map: "fk_pages_id_idx")
