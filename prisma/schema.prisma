@@ -16,7 +16,7 @@ model categories_devis_provider {
   title                  String                   @db.VarChar(255)
   description            String                   @db.Text
   pages_id               Int?
-  pages                  pages?                   @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "categories_devis_provider_pages_id")
+  pages                  pages?                   @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "categories_devis_provider_pages_id")
   devis                  devis[]
   formulaire_devis       formulaire_devis[]
   provider_join_category provider_join_category[]
@@ -32,7 +32,7 @@ model conditions {
   position      Int
   visible       Int
   pages_id      Int?
-  pages         pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "conditions_pages_id")
+  pages         pages? @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "conditions_pages_id")
 
   @@index([pages_id])
 }
@@ -44,7 +44,7 @@ model contact {
   position      Int
   visible       Int
   pages_id      Int?
-  pages         pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contact_pages_id")
+  pages         pages? @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "contact_pages_id")
 
   @@index([pages_id])
 }
@@ -73,29 +73,30 @@ model faq {
   question String @db.VarChar(255)
   answer   String @db.VarChar(255)
   pages_id Int?
-  pages    pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "faq_pages_id")
+  pages    pages? @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "faq_pages_id")
 
   @@index([pages_id])
 }
 
 model footer {
-  id       Int    @id @default(autoincrement())
-  category String @db.VarChar(10)
+  id       Int     @id @default(autoincrement())
+  category String  @db.VarChar(10)
   visible  Int
-  text     String @db.VarChar(45)
+  text     String  @db.VarChar(45)
   pages_id Int?
   position Int
-  pages    pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "footer_pages_id")
+  section  String? @db.VarChar(45)
+  pages    pages?  @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "footer_pages_id")
 
   @@index([pages_id], map: "fk_pages_id_idx")
 }
 
 model formulaire_devis {
-  id                        Int                       @id @default(autoincrement())
-  category_id               Int
-  type_question             String                    @db.VarChar(45)
-  question                  String                    @db.VarChar(100)
-  categories_devis_provider categories_devis_provider @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "formulaire_devis_category_id")
+  id                        Int                        @id @default(autoincrement())
+  category_id               Int?
+  type_question             String                     @db.VarChar(45)
+  question                  String                     @db.VarChar(100)
+  categories_devis_provider categories_devis_provider? @relation(fields: [category_id], references: [id], onUpdate: SetNull, map: "formulaire_devis_category_id")
   formulaire_join_answer    formulaire_join_answer[]
 
   @@index([category_id])
@@ -126,7 +127,7 @@ model home_devis {
   visible       Int
   page_section  String @db.VarChar(45)
   pages_id      Int?
-  pages         pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "home_devis_pages_id")
+  pages         pages? @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "home_devis_pages_id")
 
   @@index([pages_id])
 }
@@ -138,7 +139,7 @@ model legal {
   visible       Int
   text          String @db.VarChar(255)
   pages_id      Int?
-  pages         pages? @relation(fields: [pages_id], references: [id], onDelete: Cascade, map: "legal_pages_id")
+  pages         pages? @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "legal_pages_id")
 
   @@index([pages_id])
 }
@@ -160,7 +161,7 @@ model navbar {
   text     String @db.VarChar(45)
   visible  Int
   pages_id Int?
-  pages    pages? @relation(fields: [pages_id], references: [id], onDelete: Cascade, map: "navbar_pages_id")
+  pages    pages? @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "navbar_pages_id")
 
   @@index([pages_id], map: "fk_pages_id_idx")
 }
@@ -172,7 +173,7 @@ model notice {
   position      Int
   visible       Int
   pages_id      Int?
-  pages         pages? @relation(fields: [pages_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "notice_pages_id")
+  pages         pages? @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "notice_pages_id")
 
   @@index([pages_id])
 }
@@ -193,6 +194,7 @@ model pages {
   legal                     legal[]
   navbar                    navbar[]
   notice                    notice[]
+  pages_content             pages_content[]
 }
 
 model provider {
@@ -253,4 +255,18 @@ model user {
   status         Int        @default(0)
   devis          devis[]
   messages       messages[]
+}
+
+model pages_content {
+  id           Int    @id @default(autoincrement())
+  page_name    String @db.VarChar(45)
+  visible      Int
+  page_section String @db.VarChar(45)
+  text_type    String @db.VarChar(45)
+  position     Int
+  text         String @db.VarChar(1000)
+  pages_id     Int?
+  pages        pages? @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "fk_content_pages_id")
+
+  @@index([pages_id], map: "fk_content_pages_id_idx")
 }
