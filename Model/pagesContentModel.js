@@ -3,17 +3,12 @@ const prisma = new PrismaClient();
 
 const findAllVisible = async () => {
   const result = await prisma.pages_content.findMany({
-    select: {
-      text: true,
-      position: true,
+    include: {
       pages: {
         select: {
           url: true,
         },
       },
-    },
-    where: {
-      visible: 1,
     },
   });
   return result;
