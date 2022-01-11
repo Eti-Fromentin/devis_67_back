@@ -1,4 +1,4 @@
-const { findAll } = require('../Model/footerModel');
+const { findAll } = require('../Model/homeDevisModel');
 
 const getAll = async (req, res) => {
   const data = await findAll();

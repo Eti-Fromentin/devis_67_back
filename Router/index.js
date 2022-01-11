@@ -1,13 +1,14 @@
 const navbarRouter = require('./navbarRouter');
 const footerRouter = require('./footerRouter');
-const conditionsRouter = require('./conditionsRouter');
-const legalRouter = require('./legalRouter');
+const homeDevisRouter = require('./homeDevisRouter');
+const pagesContentRouter = require('./pagesContentRouter');
+
 
 const setupRoutes = (app) => {
   app.use('/api/navbar', navbarRouter);
   app.use('/api/footer', footerRouter);
-  app.use('./api/conditions', conditionsRouter);
-  app.use('./api/legal', legalRouter);
+  app.use('/api/homedevis', homeDevisRouter);
+  app.use('/api/pagescontent', pagesContentRouter);
 };
 
 module.exports = { setupRoutes };
