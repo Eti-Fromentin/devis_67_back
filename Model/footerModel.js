@@ -3,7 +3,7 @@ const { DataNotFoundError } = require('../errors-types');
 const prisma = new PrismaClient();
 
 const findAll = async () => {
-  const result = await prisma.contact.findMany({
+  const result = await prisma.footer.findMany({
     include: {
       pages: {
         select: {
