@@ -2,8 +2,8 @@ const { PrismaClient } = require('@prisma/client');
 const { DataNotFoundError } = require('../errors-types');
 const prisma = new PrismaClient();
 
-const findAll = async () => {
-  const result = await prisma.footer.findMany({
+const findAllVisible = async () => {
+  const result = await prisma.pages_content.findMany({
     include: {
       pages: {
         select: {
@@ -18,4 +18,4 @@ const findAll = async () => {
   return result;
 };
 
-module.exports = { findAll };
+module.exports = { findAllVisible };

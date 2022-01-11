@@ -1,22 +1,21 @@
 const { PrismaClient } = require('@prisma/client');
+const { DataNotFoundError } = require('../errors-types');
 const prisma = new PrismaClient();
 
-const findAllVisible = async () => {
-  const result = await prisma.footer.findMany({
-    select: {
-      text: true,
-      position: true,
+const findAll = async () => {
+  const result = await prisma.navbar.findMany({
+    include: {
       pages: {
         select: {
           url: true,
         },
       },
     },
-    where: {
-      visible: 1,
-    },
   });
+  if (!result.length) {
+    throw new DataNotFoundError();
+  }
   return result;
 };
 
-module.exports = { findAllVisible };
+module.exports = { findAll };

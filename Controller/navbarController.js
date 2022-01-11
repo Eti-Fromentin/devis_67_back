@@ -1,13 +1,8 @@
-const { findAllVisible } = require('../Model/navbarModel');
+const { findAll } = require('../Model/navbarModel');
 
-const getAllVisible = async (req, res) => {
-  try {
-    const data = await findAllVisible();
-    res.status(200).json(data);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Internal server error');
-  }
+const getAll = async (req, res) => {
+  const data = await findAll();
+  res.status(200).json(data);
 };
 
-module.exports = { getAllVisible };
+module.exports = { getAll };
