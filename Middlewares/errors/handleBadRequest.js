@@ -1,4 +1,4 @@
-const { BadRequestError } = require('../errors-types');
+const { BadRequestError } = require('./errors-types');
 
 module.exports = (err, req, res, next) => {
   if (err instanceof BadRequestError) {

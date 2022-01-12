@@ -1,8 +1,14 @@
-const { findAll } = require('../Model/userModel');
+const { findOneByEmail, createOne } = require('../Model/userModel');
 
-const getAll = async (req, res) => {
-  const data = await findAll();
+const getOneByEmail = async (req, res) => {
+  const mail = req.params.mail;
+  const data = await findOneByEmail(mail);
   res.status(200).json(data);
 };
 
-module.exports = { getAll };
+const postOneUser = async (req, res) => {
+  const user = await createOne(req.body);
+  res.status(201).json(user);
+};
+
+module.exports = { getOneByEmail, postOneUser };
