@@ -12,8 +12,8 @@ const hashPassword = async (password) => {
 };
 
 const verifyPassword = async (hash, password) => {
-  // console.log(hash);
-  // console.log(password);
+  console.log(hash);
+  console.log(password);
   try {
     if (await argon2.verify(hash, password)) {
       return true;
