@@ -244,18 +244,18 @@ model top_ten {
 }
 
 model user {
-  id             Int        @id @default(autoincrement())
-  firstname      String     @db.VarChar(45)
-  lastname       String     @db.VarChar(45)
-  mail           String     @db.VarChar(60)
-  phone          Int?
-  address        String?    @db.VarChar(100)
-  postal_code    Int        @map("postal-code")
-  city           String     @db.VarChar(100)
-  hashedpassword String     @db.VarChar(45)
-  status         Int        @default(0)
-  devis          devis[]
-  messages       messages[]
+  id         Int        @id @default(autoincrement())
+  firstname  String     @db.VarChar(45)
+  lastname   String     @db.VarChar(45)
+  email      String     @unique(map: "email") @db.VarChar(60)
+  phone      Int?
+  address    String?    @db.VarChar(100)
+  postalcode Int
+  city       String     @db.VarChar(100)
+  password   String     @db.VarChar(1000)
+  status     Int        @default(0)
+  devis      devis[]
+  messages   messages[]
 }
 
 model pages_content {
