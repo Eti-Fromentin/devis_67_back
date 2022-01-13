@@ -58,8 +58,8 @@ model devis {
   goal                      Int
   objective                 Int
   details                   String?                   @db.VarChar(1000)
-  categories_devis_provider categories_devis_provider @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_asked_devis_category")
-  user                      user                      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_asked_devis_user")
+  categories_devis_provider categories_devis_provider @relation(fields: [category_id], references: [id], onUpdate: Restrict, map: "fk_asked_devis_category")
+  user                      user                      @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "fk_asked_devis_user")
   questions_anwers          questions_anwers[]
 
   @@index([category_id], map: "fk_asked_devis_category_idx")
@@ -106,8 +106,8 @@ model formulaire_join_answer {
   id                         Int                        @id @default(autoincrement())
   formulaire_id              Int
   answer_id                  Int
-  formulaire_possible_answer formulaire_possible_answer @relation(fields: [answer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_formulaire_join_answer_2")
-  formulaire_devis           formulaire_devis           @relation(fields: [formulaire_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_formulaire_join_answer_1")
+  formulaire_possible_answer formulaire_possible_answer @relation(fields: [answer_id], references: [id], onUpdate: Restrict, map: "fk_formulaire_join_answer_2")
+  formulaire_devis           formulaire_devis           @relation(fields: [formulaire_id], references: [id], onUpdate: Restrict, map: "fk_formulaire_join_answer_1")
 
   @@index([formulaire_id], map: "fk_formulaire_join_answer_1_idx")
   @@index([answer_id], map: "fk_formulaire_join_answer_2_idx")
@@ -150,18 +150,19 @@ model messages {
   text       String   @db.VarChar(1000)
   created_at DateTime @db.DateTime(0)
   user_id    Int
-  user       user     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "message_user_id")
+  user       user     @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "message_user_id")
 
   @@index([user_id], map: "message_user_id_idx")
 }
 
 model navbar {
-  id       Int    @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   position Int
-  text     String @db.VarChar(45)
+  text     String  @db.VarChar(45)
   visible  Int
   pages_id Int?
-  pages    pages? @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "navbar_pages_id")
+  pagetype String? @db.VarChar(11)
+  pages    pages?  @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "navbar_pages_id")
 
   @@index([pages_id], map: "fk_pages_id_idx")
 }
@@ -215,8 +216,8 @@ model provider_join_category {
   id                        Int                       @id
   provider_id               Int
   category_id               Int
-  categories_devis_provider categories_devis_provider @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_provider_category")
-  provider                  provider                  @relation(fields: [provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_category_provider")
+  categories_devis_provider categories_devis_provider @relation(fields: [category_id], references: [id], onUpdate: Restrict, map: "fk_provider_category")
+  provider                  provider                  @relation(fields: [provider_id], references: [id], onUpdate: Restrict, map: "fk_category_provider")
 
   @@index([category_id], map: "fk_provider_category_idx")
   @@index([provider_id], map: "fk_provider_has_category_provider1_idx")
@@ -227,7 +228,7 @@ model questions_anwers {
   questions String @db.VarChar(100)
   answers   String @db.VarChar(255)
   devis_id  Int
-  devis     devis  @relation(fields: [devis_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "question_devis_id")
+  devis     devis  @relation(fields: [devis_id], references: [id], onUpdate: Restrict, map: "question_devis_id")
 
   @@index([devis_id], map: "question_devis_id_idx")
 }
@@ -237,24 +238,24 @@ model top_ten {
   position                  Int
   visible                   Int
   category_id               Int?
-  categories_devis_provider categories_devis_provider? @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "top_ten_category_id")
+  categories_devis_provider categories_devis_provider? @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "top_ten_category_id")
 
   @@index([category_id])
 }
 
 model user {
-  id             Int        @id @default(autoincrement())
-  firstname      String     @db.VarChar(45)
-  lastname       String     @db.VarChar(45)
-  mail           String     @db.VarChar(60)
-  phone          Int?
-  address        String?    @db.VarChar(100)
-  postal_code    Int        @map("postal-code")
-  city           String     @db.VarChar(100)
-  hashedpassword String     @db.VarChar(45)
-  status         Int        @default(0)
-  devis          devis[]
-  messages       messages[]
+  id         Int        @id @default(autoincrement())
+  firstname  String     @db.VarChar(45)
+  lastname   String     @db.VarChar(45)
+  email      String     @unique(map: "email") @db.VarChar(60)
+  phone      Int?
+  address    String?    @db.VarChar(100)
+  postalcode Int
+  city       String     @db.VarChar(100)
+  password   String     @db.VarChar(1000)
+  status     Int        @default(0)
+  devis      devis[]
+  messages   messages[]
 }
 
 model pages_content {

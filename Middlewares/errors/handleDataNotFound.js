@@ -1,4 +1,4 @@
-const { DataNotFoundError } = require('../errors-types');
+const { DataNotFoundError } = require('./errors-types');
 
 module.exports = (err, req, res, next) => {
   if (err instanceof DataNotFoundError) {
