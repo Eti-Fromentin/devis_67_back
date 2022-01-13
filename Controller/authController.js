@@ -14,7 +14,6 @@ const logIn = async (req, res) => {
     res.set('Access-Control-Expose-Headers', 'AccessToken');
     res.status(200).json('loggedIn');
   } else {
-    // res.status(204).json('null');
     throw new UnAuthorizedError();
   }
 };

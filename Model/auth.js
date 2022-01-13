@@ -2,7 +2,7 @@ const argon2 = require('argon2');
 
 const hashPassword = async (password) => {
   try {
-    console.log(password);
+    // console.log(password);
     const hash = await argon2.hash(password);
     return hash;
   } catch (err) {
@@ -12,8 +12,8 @@ const hashPassword = async (password) => {
 };
 
 const verifyPassword = async (hash, password) => {
-  console.log(hash);
-  console.log(password);
+  // console.log(hash);
+  // console.log(password);
   try {
     if (await argon2.verify(hash, password)) {
       return true;
