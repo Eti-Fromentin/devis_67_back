@@ -1,10 +1,25 @@
 const { BadRequestError } = require('../Middlewares/errors/errors-types');
-const { findOneByEmail, createOne, validateInputUser } = require('../Model/userModel');
+const { findOneByEmail, createOne, validateInputUser, findOneById } = require('../Model/userModel');
 
 const getOneByEmail = async (req, res) => {
   const email = req.body.email;
   const data = await findOneByEmail(email);
   res.status(200).json(data);
+};
+
+const getOneById = async (req, res) => {
+  const id = Number(req.params.id);
+  const user = await findOneById(id);
+  res.status(200).json({
+    id: user.id,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    email: user.email,
+    phone: user.phone,
+    address: user.address,
+    postalcode: user.postalcode,
+    city: user.city,
+  });
 };
 
 const postOneUser = async (req, res) => {
@@ -18,4 +33,4 @@ const postOneUser = async (req, res) => {
   }
 };
 
-module.exports = { getOneByEmail, postOneUser };
+module.exports = { getOneByEmail, postOneUser, getOneById };
