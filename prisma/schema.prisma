@@ -247,7 +247,7 @@ model user {
   id         Int        @id @default(autoincrement())
   firstname  String     @db.VarChar(45)
   lastname   String     @db.VarChar(45)
-  email      String     @unique(map: "email") @db.VarChar(60)
+  email      String     @unique(map: "mail") @db.VarChar(60)
   phone      Int?
   address    String?    @db.VarChar(100)
   postalcode Int

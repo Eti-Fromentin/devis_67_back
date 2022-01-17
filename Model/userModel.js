@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const Joi = require('joi');
 const { hashPassword } = require('./auth');
-const { DataNotFoundError, BadRequestError } = require('../Middlewares/errors/errors-types');
+const { DataNotFoundError, BadRequestError, UserAlreadyRegistered } = require('../Middlewares/errors/errors-types');
 const prisma = new PrismaClient();
 
 const validateInputUser = (data, forCreation = true) => {
@@ -25,19 +25,15 @@ const findOneByEmail = async (email, checking = false) => {
       email: email,
     },
   });
-  if (!result && checking === true) {
-    return false;
-  } else if (result && checking === true) {
-    return true;
-  } else if (result && checking === false) {
-    return result;
-  } else {
-    return new DataNotFoundError();
-  }
+  if (result && checking === true) {
+    throw new UserAlreadyRegistered();
+  } else if (!result && checking === false) {
+    throw new BadRequestError();
+  } else return result;
 };
 
 const findOneById = async (id) => {
-  const user = await prisma.user.findMany({
+  const user = await prisma.user.findUnique({
     where: {
       id: id,
     },
