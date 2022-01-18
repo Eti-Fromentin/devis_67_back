@@ -1,7 +1,8 @@
 const { findForm } = require('../Model/formDevisModel');
 
 const getForm = async (req, res) => {
-  const data = await findForm();
+  const category = req.params.category;
+  const data = await findForm(category);
   res.status(200).json(data);
 };
 
