@@ -48,9 +48,6 @@ const createOne = async (body) => {
   const res = await prisma.user.create({
     data: { ...body },
   });
-  if (!res) {
-    throw new BadRequestError();
-  }
   return res;
 };
 
