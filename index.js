@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const SERVER_PORT = 8000;
+const { SERVER_PORT } = require('./env');
 const { setupRoutes } = require('./Router');
 const { errorMiddlewares } = require('./Middlewares');
 const app = express();

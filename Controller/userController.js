@@ -27,7 +27,7 @@ const postOneUser = async (req, res) => {
   const validation = await validateInputUser(req.body);
   if (!validation) {
     const user = await createOne(req.body);
-    res.status(201).json({ id: user.id, firstname: user.firstname, lastname: user.lastname, email: user.email });
+    res.status(201).json({ id: user.id, firstname: user.firstname, lastname: user.lastname, email: user.email, phone: user.phone });
   } else {
     throw new BadRequestError();
   }
