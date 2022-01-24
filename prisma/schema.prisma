@@ -110,6 +110,8 @@ model formulaire_join_answer {
   id                         Int                        @id @default(autoincrement())
   formulaire_id              Int
   answer_id                  Int
+  position                   Int
+  visible                    Int
   formulaire_possible_answer formulaire_possible_answer @relation(fields: [answer_id], references: [id], onUpdate: Restrict, map: "fk_formulaire_join_answer_2")
   formulaire_devis           formulaire_devis           @relation(fields: [formulaire_id], references: [id], onUpdate: Restrict, map: "fk_formulaire_join_answer_1")
 
@@ -120,8 +122,6 @@ model formulaire_join_answer {
 model formulaire_possible_answer {
   id                     Int                      @id @default(autoincrement())
   answer                 String                   @db.VarChar(255)
-  position               Int                      @db.TinyInt
-  visible                Int                      @db.TinyInt
   formulaire_join_answer formulaire_join_answer[]
 }
 
