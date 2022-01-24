@@ -12,7 +12,7 @@ const logIn = async (req, res) => {
     const token = await createToken(user.id);
     res.set('AccessToken', token);
     res.set('Access-Control-Expose-Headers', 'AccessToken');
-    res.status(200).json('loggedIn');
+    res.status(200).json({ userId: user.id });
   } else {
     throw new UnAuthorizedError();
   }

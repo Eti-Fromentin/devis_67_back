@@ -252,6 +252,7 @@ model top_ten {
 
 model user {
   id         Int        @id @default(autoincrement())
+  isAdmin    Int        @default(0)
   firstname  String     @db.VarChar(45)
   lastname   String     @db.VarChar(45)
   email      String     @unique(map: "mail") @db.VarChar(60)
