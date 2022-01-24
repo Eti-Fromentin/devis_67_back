@@ -4,7 +4,6 @@ const { UnAuthorizedError } = require('./errors/errors-types');
 
 const isTokenValid = (req, res, next) => {
   const id = req.params.id;
-  console.log(id);
   if (!req.headers.authorization) {
     throw new UnAuthorizedError();
   }
