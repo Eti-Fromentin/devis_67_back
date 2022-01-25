@@ -19,6 +19,8 @@ const getOneById = async (req, res) => {
     address: user.address,
     postalcode: user.postalcode,
     city: user.city,
+    messages: user.messages,
+    devis: user.devis,
   });
 };
 
