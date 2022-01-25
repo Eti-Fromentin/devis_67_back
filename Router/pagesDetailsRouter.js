@@ -4,5 +4,4 @@ const pagesDetailsController = require('../Controller/pagesDetailsController');
 
 router.get('/:name', asyncHandler(pagesDetailsController.getPagesDetails));
 
-
 module.exports = router;

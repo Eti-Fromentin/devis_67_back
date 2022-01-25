@@ -5,15 +5,15 @@ const prisma = new PrismaClient();
 const findByPage = async (page) => {
   const result = await prisma.pages_content.findMany({
     where: {
-      page_name: page
+      page_name: page,
     },
     include: {
       pages: {
         select: {
-        url: true,
-        }
-      }
-    }
+          url: true,
+        },
+      },
+    },
   });
   if (!result.length) {
     throw new DataNotFoundError();
