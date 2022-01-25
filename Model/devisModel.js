@@ -8,7 +8,6 @@ const createDevis = async (body) => {
     data: { ...body.default },
   });
   questionsAnswers.length && (await questionsAnswers.map((elt) => (elt['devis_id'] = defaultDevis.id)));
-  console.log(questionsAnswers);
   const categDevis = await prisma.questions_answers.createMany({
     data: questionsAnswers,
   });
