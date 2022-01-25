@@ -6,6 +6,7 @@ const userRouter = require('./userRouter');
 const authRouter = require('./authRouter');
 const formDevisRouter = require('./formDevisRouter');
 const devisRouter = require('./devisRouter');
+const pagesDetailsRouter = require('./pagesDetailsRouter');
 
 const setupRoutes = (app) => {
   app.use('/api/navbar', navbarRouter);
@@ -16,6 +17,7 @@ const setupRoutes = (app) => {
   app.use('/api/auth', authRouter);
   app.use('/api/form', formDevisRouter);
   app.use('/api/devis', devisRouter);
+  app.use('/api/pagesdetails', pagesDetailsRouter);
 };
 
 module.exports = { setupRoutes };

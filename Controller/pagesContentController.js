@@ -1,8 +1,9 @@
-const { findAllVisible } = require('../Model/pagesContentModel');
+const { findByPage } = require('../Model/pagesContentModel');
 
-const getAllVisible = async (req, res) => {
-  const data = await findAllVisible();
+const getByPage = async (req, res) => {
+  const page = req.params.page;
+  const data = await findByPage(page);
   res.status(200).json(data);
 };
 
-module.exports = { getAllVisible };
+module.exports = { getByPage };

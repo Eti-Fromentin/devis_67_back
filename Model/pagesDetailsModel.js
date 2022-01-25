@@ -2,17 +2,10 @@ const { PrismaClient } = require('@prisma/client');
 const { DataNotFoundError } = require('../Middlewares/errors/errors-types');
 const prisma = new PrismaClient();
 
-const findByPage = async (page) => {
-  const result = await prisma.pages_content.findMany({
+const findPagesDetails = async (name) => {
+  const result = await prisma.pages.findMany({
     where: {
-      page_name: page,
-    },
-    include: {
-      pages: {
-        select: {
-          url: true,
-        },
-      },
+      shortUrl: name,
     },
   });
   if (!result.length) {
@@ -21,4 +14,4 @@ const findByPage = async (page) => {
   return result;
 };
 
-module.exports = { findByPage };
+module.exports = { findPagesDetails };
