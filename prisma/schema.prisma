@@ -54,15 +54,15 @@ model devis {
   user_id                   Int
   category_id               Int
   status                    Int
-  postalcode                Int?
+  postalcode                Int
   city                      String?                   @db.VarChar(100)
-  type                      String?                   @db.VarChar(50)
+  type                      String                    @db.VarChar(50)
   goal                      String?                   @db.VarChar(50)
   objective                 String?                   @db.VarChar(50)
-  details                   String                    @db.VarChar(1000)
+  details                   String?                   @db.VarChar(1000)
   categories_devis_provider categories_devis_provider @relation(fields: [category_id], references: [id], onUpdate: Restrict, map: "fk_asked_devis_category")
   user                      user                      @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "fk_asked_devis_user")
-  questions_anwers          questions_anwers[]
+  questions_answers         questions_answers[]
 
   @@index([category_id], map: "fk_asked_devis_category_idx")
   @@index([user_id], map: "fk_devis_user1_idx")
@@ -110,6 +110,8 @@ model formulaire_join_answer {
   id                         Int                        @id @default(autoincrement())
   formulaire_id              Int
   answer_id                  Int
+  position                   Int
+  visible                    Int
   formulaire_possible_answer formulaire_possible_answer @relation(fields: [answer_id], references: [id], onUpdate: Restrict, map: "fk_formulaire_join_answer_2")
   formulaire_devis           formulaire_devis           @relation(fields: [formulaire_id], references: [id], onUpdate: Restrict, map: "fk_formulaire_join_answer_1")
 
@@ -120,8 +122,6 @@ model formulaire_join_answer {
 model formulaire_possible_answer {
   id                     Int                      @id @default(autoincrement())
   answer                 String                   @db.VarChar(255)
-  position               Int                      @db.TinyInt
-  visible                Int                      @db.TinyInt
   formulaire_join_answer formulaire_join_answer[]
 }
 
@@ -230,16 +230,6 @@ model provider_join_category {
   @@index([provider_id], map: "fk_provider_has_category_provider1_idx")
 }
 
-model questions_anwers {
-  id        Int    @id @default(autoincrement())
-  questions String @db.VarChar(100)
-  answers   String @db.VarChar(255)
-  devis_id  Int
-  devis     devis  @relation(fields: [devis_id], references: [id], onUpdate: Restrict, map: "question_devis_id")
-
-  @@index([devis_id], map: "question_devis_id_idx")
-}
-
 model top_ten {
   id                        Int                        @id @default(autoincrement())
   position                  Int
@@ -252,6 +242,7 @@ model top_ten {
 
 model user {
   id         Int        @id @default(autoincrement())
+  isAdmin    Int        @default(0)
   firstname  String     @db.VarChar(45)
   lastname   String     @db.VarChar(45)
   email      String     @unique(map: "mail") @db.VarChar(60)
@@ -277,4 +268,14 @@ model pages_content {
   pages        pages? @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "fk_content_pages_id")
 
   @@index([pages_id], map: "fk_content_pages_id_idx")
+}
+
+model questions_answers {
+  id        Int    @id @default(autoincrement())
+  questions String @db.VarChar(100)
+  answers   String @db.VarChar(255)
+  devis_id  Int
+  devis     devis  @relation(fields: [devis_id], references: [id], onUpdate: Restrict, map: "question_devis_id")
+
+  @@index([devis_id], map: "question_devis_id_idx")
 }
