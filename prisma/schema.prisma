@@ -54,12 +54,7 @@ model devis {
   user_id                   Int
   category_id               Int
   status                    Int                       @default(0)
-  postalcode                Int
-  city                      String?                   @db.VarChar(100)
-  type                      String                    @db.VarChar(50)
-  goal                      String?                   @db.VarChar(50)
-  objective                 String?                   @db.VarChar(50)
-  details                   String?                   @db.VarChar(1000)
+  created_at                DateTime                  @default(now()) @db.DateTime(0)
   categories_devis_provider categories_devis_provider @relation(fields: [category_id], references: [id], onUpdate: Restrict, map: "fk_asked_devis_category")
   user                      user                      @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "fk_asked_devis_user")
   questions_answers         questions_answers[]
@@ -95,11 +90,12 @@ model footer {
 
 model formulaire_devis {
   id                        Int                        @id @default(autoincrement())
-  category_id               Int?
+  category_id               Int?                       @default(1)
   type_question             String                     @db.VarChar(45)
   question                  String                     @db.VarChar(100)
-  visible                   Int                        @db.TinyInt
+  visible                   Int                        @default(1) @db.TinyInt
   position                  Int                        @db.TinyInt
+  required                  Int                        @default(1) @db.TinyInt
   categories_devis_provider categories_devis_provider? @relation(fields: [category_id], references: [id], onUpdate: SetNull, map: "formulaire_devis_category_id")
   formulaire_join_answer    formulaire_join_answer[]
 
@@ -275,11 +271,12 @@ model pages_content {
 }
 
 model questions_answers {
-  id        Int    @id @default(autoincrement())
-  questions String @db.VarChar(100)
-  answers   String @db.VarChar(255)
-  devis_id  Int
-  devis     devis  @relation(fields: [devis_id], references: [id], onUpdate: Restrict, map: "question_devis_id")
+  id         Int      @id @default(autoincrement())
+  questions  String   @db.VarChar(100)
+  answers    String   @db.VarChar(255)
+  devis_id   Int
+  created_at DateTime @default(now()) @db.DateTime(0)
+  devis      devis    @relation(fields: [devis_id], references: [id], onUpdate: Restrict, map: "question_devis_id")
 
   @@index([devis_id], map: "question_devis_id_idx")
 }
