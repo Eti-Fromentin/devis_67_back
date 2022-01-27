@@ -18,4 +18,20 @@ const findAll = async () => {
   return result;
 };
 
-module.exports = { findAll };
+const findCategLink = async () => {
+  const result = await prisma.categories_devis_provider.findMany({
+    include: {
+      pages: {
+        select: {
+          url: true,
+        },
+      },
+    },
+  });
+  if (!result.length) {
+    throw new DataNotFoundError();
+  }
+  return result;
+};
+
+module.exports = { findAll, findCategLink };

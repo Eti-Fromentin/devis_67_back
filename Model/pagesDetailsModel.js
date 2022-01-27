@@ -14,4 +14,13 @@ const findPagesDetails = async (name) => {
   return result;
 };
 
-module.exports = { findPagesDetails };
+const findAllDevisDynamicRoutes = async () => {
+  const result = await prisma.pages.findMany();
+  if (!result.length) {
+    throw new DataNotFoundError();
+  }
+  const routes = await result.filter((elt) => elt.url.includes('/devis/'));
+  return routes;
+};
+
+module.exports = { findPagesDetails, findAllDevisDynamicRoutes };

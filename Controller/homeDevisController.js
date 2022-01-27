@@ -1,8 +1,13 @@
-const { findAll } = require('../Model/homeDevisModel');
+const { findAll, findCategLink } = require('../Model/homeDevisModel');
 
 const getAll = async (req, res) => {
   const data = await findAll();
   res.status(200).json(data);
 };
 
-module.exports = { getAll };
+const getCategLink = async (req, res) => {
+  const data = await findCategLink();
+  res.status(200).json(data);
+};
+
+module.exports = { getAll, getCategLink };
