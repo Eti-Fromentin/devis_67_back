@@ -4,6 +4,11 @@ const prisma = new PrismaClient();
 
 const findByPage = async (page) => {
   const result = await prisma.pages_content.findMany({
+    orderBy: [
+      {
+        position: 'asc',
+      },
+    ],
     where: {
       page_name: page,
     },
