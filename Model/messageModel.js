@@ -1,6 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
 const Joi = require('joi');
-/*const { DataNotFoundError } = require('../Middlewares/errors/errors-types');*/
 const prisma = new PrismaClient();
 
 const validateInputMessage = (data) => {
