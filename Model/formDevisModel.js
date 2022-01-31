@@ -11,8 +11,18 @@ const findForm = async (category) => {
         },
       },
     },
+    orderBy: [
+      {
+        position: 'asc',
+      },
+    ],
     include: {
       formulaire_join_answer: {
+        orderBy: [
+          {
+            position: 'asc',
+          },
+        ],
         include: {
           formulaire_possible_answer: true,
         },
