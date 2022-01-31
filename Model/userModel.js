@@ -36,6 +36,10 @@ const findOneById = async (id) => {
     where: {
       id: id,
     },
+    include: {
+      messages: true,
+      devis: { include: { questions_answers: true, categories_devis_provider: true } },
+    },
   });
   if (!user) {
     throw new DataNotFoundError();

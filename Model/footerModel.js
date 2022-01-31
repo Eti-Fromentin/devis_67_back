@@ -4,6 +4,11 @@ const prisma = new PrismaClient();
 
 const findAll = async () => {
   const result = await prisma.footer.findMany({
+    orderBy: [
+      {
+        section: 'asc',
+      },
+    ],
     include: {
       pages: {
         select: {

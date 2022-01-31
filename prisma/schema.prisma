@@ -53,16 +53,11 @@ model devis {
   id                        Int                       @id @default(autoincrement())
   user_id                   Int
   category_id               Int
-  status                    Int
-  postalcode                Int?
-  city                      String?                   @db.VarChar(100)
-  type                      String?                   @db.VarChar(50)
-  goal                      String?                   @db.VarChar(50)
-  objective                 String?                   @db.VarChar(50)
-  details                   String                    @db.VarChar(1000)
+  status                    Int                       @default(0)
+  created_at                DateTime                  @default(now()) @db.DateTime(0)
   categories_devis_provider categories_devis_provider @relation(fields: [category_id], references: [id], onUpdate: Restrict, map: "fk_asked_devis_category")
   user                      user                      @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "fk_asked_devis_user")
-  questions_anwers          questions_anwers[]
+  questions_answers         questions_answers[]
 
   @@index([category_id], map: "fk_asked_devis_category_idx")
   @@index([user_id], map: "fk_devis_user1_idx")
@@ -95,11 +90,12 @@ model footer {
 
 model formulaire_devis {
   id                        Int                        @id @default(autoincrement())
-  category_id               Int?
+  category_id               Int?                       @default(1)
   type_question             String                     @db.VarChar(45)
   question                  String                     @db.VarChar(100)
-  visible                   Int                        @db.TinyInt
+  visible                   Int                        @default(1) @db.TinyInt
   position                  Int                        @db.TinyInt
+  required                  Int                        @default(1) @db.TinyInt
   categories_devis_provider categories_devis_provider? @relation(fields: [category_id], references: [id], onUpdate: SetNull, map: "formulaire_devis_category_id")
   formulaire_join_answer    formulaire_join_answer[]
 
@@ -110,6 +106,8 @@ model formulaire_join_answer {
   id                         Int                        @id @default(autoincrement())
   formulaire_id              Int
   answer_id                  Int
+  position                   Int
+  visible                    Int
   formulaire_possible_answer formulaire_possible_answer @relation(fields: [answer_id], references: [id], onUpdate: Restrict, map: "fk_formulaire_join_answer_2")
   formulaire_devis           formulaire_devis           @relation(fields: [formulaire_id], references: [id], onUpdate: Restrict, map: "fk_formulaire_join_answer_1")
 
@@ -120,8 +118,6 @@ model formulaire_join_answer {
 model formulaire_possible_answer {
   id                     Int                      @id @default(autoincrement())
   answer                 String                   @db.VarChar(255)
-  position               Int                      @db.TinyInt
-  visible                Int                      @db.TinyInt
   formulaire_join_answer formulaire_join_answer[]
 }
 
@@ -151,12 +147,15 @@ model legal {
 }
 
 model messages {
-  id         Int      @id @default(autoincrement())
-  subject    String   @db.VarChar(45)
-  text       String   @db.VarChar(1000)
-  created_at DateTime @db.DateTime(0)
-  user_id    Int
-  user       user     @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "message_user_id")
+  id           Int       @id @default(autoincrement())
+  statut       Int       @default(0) @db.TinyInt
+  subject      String    @db.VarChar(45)
+  text         String    @db.VarChar(1000)
+  created_at   DateTime? @default(now()) @db.DateTime(0)
+  user_id      Int?
+  sender_name  String?   @db.VarChar(55)
+  sender_email String?   @db.VarChar(55)
+  user         user?     @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "message_user_id")
 
   @@index([user_id], map: "message_user_id_idx")
 }
@@ -230,16 +229,6 @@ model provider_join_category {
   @@index([provider_id], map: "fk_provider_has_category_provider1_idx")
 }
 
-model questions_anwers {
-  id        Int    @id @default(autoincrement())
-  questions String @db.VarChar(100)
-  answers   String @db.VarChar(255)
-  devis_id  Int
-  devis     devis  @relation(fields: [devis_id], references: [id], onUpdate: Restrict, map: "question_devis_id")
-
-  @@index([devis_id], map: "question_devis_id_idx")
-}
-
 model top_ten {
   id                        Int                        @id @default(autoincrement())
   position                  Int
@@ -252,6 +241,8 @@ model top_ten {
 
 model user {
   id         Int        @id @default(autoincrement())
+  isAdmin    Int        @default(0)
+  created_at DateTime?  @default(now()) @db.DateTime(0)
   firstname  String     @db.VarChar(45)
   lastname   String     @db.VarChar(45)
   email      String     @unique(map: "mail") @db.VarChar(60)
@@ -260,7 +251,7 @@ model user {
   postalcode Int
   city       String     @db.VarChar(100)
   password   String     @db.VarChar(1000)
-  status     Int        @default(0)
+  status     Int        @default(0) @db.TinyInt
   devis      devis[]
   messages   messages[]
 }
@@ -277,4 +268,15 @@ model pages_content {
   pages        pages? @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "fk_content_pages_id")
 
   @@index([pages_id], map: "fk_content_pages_id_idx")
+}
+
+model questions_answers {
+  id         Int      @id @default(autoincrement())
+  questions  String   @db.VarChar(100)
+  answers    String   @db.VarChar(255)
+  devis_id   Int
+  created_at DateTime @default(now()) @db.DateTime(0)
+  devis      devis    @relation(fields: [devis_id], references: [id], onUpdate: Restrict, map: "question_devis_id")
+
+  @@index([devis_id], map: "question_devis_id_idx")
 }
