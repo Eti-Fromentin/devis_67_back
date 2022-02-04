@@ -47,6 +47,19 @@ const findOneById = async (id) => {
   return user;
 };
 
+const findAllUser = async () => {
+  const users = await prisma.user.findMany({
+    include: {
+      messages: true,
+      devis: { include: { questions_answers: true, categories_devis_provider: true } },
+    },
+  });
+  if (!users) {
+    throw new DataNotFoundError();
+  }
+  return users;
+};
+
 const createOne = async (body) => {
   body.password = await hashPassword(body.password);
   const res = await prisma.user.create({
@@ -55,4 +68,4 @@ const createOne = async (body) => {
   return res;
 };
 
-module.exports = { findOneByEmail, findOneById, createOne, validateInputUser };
+module.exports = { findAllUser, findOneByEmail, findOneById, createOne, validateInputUser };

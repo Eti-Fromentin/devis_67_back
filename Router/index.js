@@ -8,6 +8,7 @@ const formDevisRouter = require('./formDevisRouter');
 const devisRouter = require('./devisRouter');
 const pagesDetailsRouter = require('./pagesDetailsRouter');
 const messageRouter = require('./messageRouter');
+const toptenRouter = require('./toptenRouter');
 
 const setupRoutes = (app) => {
   app.use('/api/navbar', navbarRouter);
@@ -20,6 +21,7 @@ const setupRoutes = (app) => {
   app.use('/api/devis', devisRouter);
   app.use('/api/pagesdetails', pagesDetailsRouter);
   app.use('/api/message', messageRouter);
+  app.use('/api/topten', toptenRouter);
 };
 
 module.exports = { setupRoutes };
