@@ -7,6 +7,6 @@ const userController = require('../Controller/userController');
 router.get('/', asyncHandler(userController.getOneByEmail));
 router.get('/:id', isTokenValid, asyncHandler(userController.getOneById));
 router.post('/', asyncHandler(userController.postOneUser));
-router.get('/admin', isAdminTokenValid, asyncHandler(userController.getAllUser));
+router.get('/admin/:id', isAdminTokenValid, asyncHandler(userController.getAllUser));
 
 module.exports = router;

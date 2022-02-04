@@ -48,7 +48,12 @@ const findOneById = async (id) => {
 };
 
 const findAllUser = async () => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    include: {
+      messages: true,
+      devis: { include: { questions_answers: true, categories_devis_provider: true } },
+    },
+  });
   if (!users) {
     throw new DataNotFoundError();
   }

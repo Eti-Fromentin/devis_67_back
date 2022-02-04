@@ -161,12 +161,12 @@ model messages {
 }
 
 model navbar {
-  id       Int     @id @default(autoincrement())
-  position Int
-  text     String  @db.VarChar(45)
-  visible  Int
-  pages_id Int?
-  pagetype String? @db.VarChar(11)
+  id       Int     @id @unique(map: "id") @default(autoincrement())
+  position Int     @default(1)
+  text     String  @default("à remplir") @db.VarChar(45)
+  visible  Int     @default(0)
+  pages_id Int?    @default(1)
+  pagetype String? @default("devis") @db.VarChar(11)
   pages    pages?  @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "navbar_pages_id")
 
   @@index([pages_id], map: "fk_pages_id_idx")
