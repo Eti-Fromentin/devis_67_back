@@ -26,12 +26,30 @@ const createMessage = async (body) => {
   return message;
 };
 
+const putMessage = async (data) => {
+  const updatedMessage = await prisma.messages.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      statut: data.statut,
+    },
+  });
+  return updatedMessage;
+};
+
 const getAllMessages = async () => {
-  const messages = await prisma.messages.findMany({});
+  const messages = await prisma.messages.findMany({
+    orderBy: [
+      {
+        created_at: 'desc',
+      },
+    ],
+  });
   if (!messages.length) {
     throw new DataNotFoundError();
   }
   return messages;
 };
 
-module.exports = { createMessage, validateInputMessage, getAllMessages };
+module.exports = { createMessage, validateInputMessage, getAllMessages, putMessage };
