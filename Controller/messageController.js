@@ -1,4 +1,4 @@
-const { createMessage, validateInputMessage } = require('../Model/messageModel');
+const { createMessage, validateInputMessage, getAllMessages } = require('../Model/messageModel');
 const { BadRequestError } = require('../Middlewares/errors/errors-types');
 
 const postMessage = async (req, res) => {
@@ -12,4 +12,9 @@ const postMessage = async (req, res) => {
   }
 };
 
-module.exports = { postMessage };
+const findAllMessages = async (req, res) => {
+  const messages = await getAllMessages();
+  res.status(200).json(messages);
+};
+
+module.exports = { postMessage, findAllMessages };
