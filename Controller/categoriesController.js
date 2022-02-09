@@ -11,7 +11,7 @@ const createCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   const data = req.body;
-  await data.map((elt) => deleteRow(elt.id));
+  await deleteRow(data.id);
   res.status(204).send('Deleted');
 };
 
