@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const Joi = require('joi');
+const { DataNotFoundError } = require('../Middlewares/errors/errors-types');
 const prisma = new PrismaClient();
 
 const validateInputMessage = (data) => {
@@ -25,4 +26,30 @@ const createMessage = async (body) => {
   return message;
 };
 
-module.exports = { createMessage, validateInputMessage };
+const putMessage = async (data) => {
+  const updatedMessage = await prisma.messages.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      statut: data.statut,
+    },
+  });
+  return updatedMessage;
+};
+
+const getAllMessages = async () => {
+  const messages = await prisma.messages.findMany({
+    orderBy: [
+      {
+        id: 'desc',
+      },
+    ],
+  });
+  if (!messages.length) {
+    throw new DataNotFoundError();
+  }
+  return messages;
+};
+
+module.exports = { createMessage, validateInputMessage, getAllMessages, putMessage };

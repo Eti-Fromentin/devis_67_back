@@ -1,4 +1,4 @@
-const { findPagesDetails, findAllDevisDynamicRoutes } = require('../Model/pagesDetailsModel');
+const { findPagesDetails, findAllDevisDynamicRoutes, findAllPageslink } = require('../Model/pagesDetailsModel');
 
 const getPagesDetails = async (req, res) => {
   const name = req.params.name;
@@ -11,4 +11,9 @@ const getDevisDynamicRoutes = async (req, res) => {
   res.status(200).json(result);
 };
 
-module.exports = { getPagesDetails, getDevisDynamicRoutes };
+const getAllPageslink = async (req, res) => {
+  const result = await findAllPageslink();
+  res.status(200).json(result);
+};
+
+module.exports = { getPagesDetails, getDevisDynamicRoutes, getAllPageslink };
