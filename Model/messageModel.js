@@ -42,7 +42,7 @@ const getAllMessages = async () => {
   const messages = await prisma.messages.findMany({
     orderBy: [
       {
-        created_at: 'desc',
+        id: 'desc',
       },
     ],
   });
