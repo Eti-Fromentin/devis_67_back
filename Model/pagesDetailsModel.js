@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const { DataNotFoundError } = require('../Middlewares/errors/errors-types');
+const { DataNotFoundError, BadRequestError } = require('../Middlewares/errors/errors-types');
 const prisma = new PrismaClient();
 
 const findPagesDetails = async (name) => {
@@ -8,9 +8,6 @@ const findPagesDetails = async (name) => {
       shortUrl: name,
     },
   });
-  if (!result.length) {
-    throw new DataNotFoundError();
-  }
   return result;
 };
 
@@ -31,4 +28,44 @@ const findAllPageslink = async () => {
   return url;
 };
 
-module.exports = { findPagesDetails, findAllDevisDynamicRoutes, findAllPageslink };
+const findOneByUrl = async (url) => {
+  const result = await prisma.pages.findFirst({
+    where: {
+      shortUrl: url,
+    },
+  });
+  return result;
+};
+
+const updatePagesRow = async (id, title, url) => {
+  const result = await prisma.pages.update({
+    where: {
+      id: id,
+    },
+    data: {
+      url: `/devis/${url}`,
+      shortUrl: url,
+      title: `Devis67.fr | Devis ${title}| Devis travaux ${title} en ligne à Strasbourg et alentours`,
+      keywords: `${title}, devis, gratuit, bas-rhin, 67, artisan, entreprise, travaux, renovation, amenagement, batiment, appartement, maison, interieur, exterieur`,
+    },
+  });
+  if (!result) {
+    throw new BadRequestError();
+  }
+  return result;
+};
+
+const createPagesRow = async (title, url) => {
+  const result = await prisma.pages.create({
+    data: {
+      url: `/devis/${url}`,
+      shortUrl: url,
+      title: `Devis67.fr | Devis ${title}| Devis travaux ${title} en ligne à Strasbourg et alentours`,
+      keywords: `${title}, devis, gratuit, bas-rhin, 67, artisan, entreprise, travaux, renovation, amenagement, batiment, appartement, maison, interieur, exterieur`,
+    },
+  });
+  if (!result) throw new BadRequestError();
+  return result;
+};
+
+module.exports = { findPagesDetails, findAllDevisDynamicRoutes, findAllPageslink, findOneByUrl, updatePagesRow, createPagesRow };

@@ -9,13 +9,14 @@ datasource db {
 
 model categories_devis_provider {
   id                     Int                      @id @default(autoincrement())
-  status                 Int
-  position               Int
+  visible                Int                      @default(1) @db.TinyInt
+  status                 Int?                     @default(0)
+  position               Int                      @default(50)
   alias                  String                   @db.VarChar(255)
-  parent                 Int
+  parent                 Int                      @default(0)
   title                  String                   @db.VarChar(255)
-  description            String                   @db.Text
-  pages_id               Int?
+  description            String?                  @db.Text
+  pages_id               Int?                     @default(1)
   pages                  pages?                   @relation(fields: [pages_id], references: [id], onUpdate: SetNull, map: "categories_devis_provider_pages_id")
   devis                  devis[]
   formulaire_devis       formulaire_devis[]
@@ -186,12 +187,12 @@ model notice {
 
 model pages {
   id                        Int                         @id @default(autoincrement())
-  status                    Int
+  status                    Int?                        @default(0)
   url                       String                      @db.VarChar(255)
   shortUrl                  String                      @db.VarChar(255)
   title                     String                      @db.VarChar(255)
-  description               String?                     @db.Text
-  keywords                  String?                     @db.Text
+  description               String?                     @default("Obtenez des devis gratuitement de la part de professionnels bas-rhinois pour les travaux que vous souhaitez engager chez vous.") @db.VarChar(255)
+  keywords                  String?                     @default("devis, gratuit, bas-rhin, 67, artisan, entreprise, travaux, renovation, amenagement, batiment, appartement, maison, interieur, exterieur") @db.VarChar(255)
   categories_devis_provider categories_devis_provider[]
   conditions                conditions[]
   contact                   contact[]

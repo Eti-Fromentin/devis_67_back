@@ -1,5 +1,4 @@
 const { PrismaClient } = require('@prisma/client');
-const { DataNotFoundError } = require('../Middlewares/errors/errors-types');
 const prisma = new PrismaClient();
 
 const findForm = async (category) => {
@@ -29,9 +28,6 @@ const findForm = async (category) => {
       },
     },
   });
-  if (!result.length) {
-    throw new DataNotFoundError();
-  }
   return result;
 };
 

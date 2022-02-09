@@ -3,6 +3,10 @@ const { findPagesDetails, findAllDevisDynamicRoutes, findAllPageslink } = requir
 const getPagesDetails = async (req, res) => {
   const name = req.params.name;
   const data = await findPagesDetails(name);
+  if (!data.length) {
+    const data = await findPagesDetails('Devis-Divers');
+    res.status(200).json(data);
+  }
   res.status(200).json(data);
 };
 
