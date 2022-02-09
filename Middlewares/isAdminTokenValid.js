@@ -9,9 +9,8 @@ const isAdminTokenValid = async (req, res, next) => {
     throw new UnAuthorizedError();
   }
   const token = req.headers.authorization.split(' ')[1];
-  await jwt.verify(token, SECRET, (err, decoded) => {
+  await jwt.verify(token, SECRET, (err) => {
     if (err) {
-      console.error(decoded);
       throw new UnAuthorizedError();
     }
     const decodedToken = jwt.decode(token, { complete: true });
