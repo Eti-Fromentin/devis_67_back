@@ -32,7 +32,7 @@ const createNavbarData = async (req, res) => {
 
 const deleteNavbarData = async (req, res) => {
   const data = req.body;
-  await data.map((elt) => deleteRow(elt.id));
+  await deleteRow(data.id);
   res.status(204).send('Deleted');
 };
 
