@@ -189,10 +189,10 @@ model pages {
   id                        Int                         @id @default(autoincrement())
   status                    Int?                        @default(0)
   url                       String                      @db.VarChar(255)
-  shortUrl                  String                      @db.VarChar(255)
-  title                     String                      @db.VarChar(255)
-  description               String?                     @default("Obtenez des devis gratuitement de la part de professionnels bas-rhinois pour les travaux que vous souhaitez engager chez vous.") @db.VarChar(255)
-  keywords                  String?                     @default("devis, gratuit, bas-rhin, 67, artisan, entreprise, travaux, renovation, amenagement, batiment, appartement, maison, interieur, exterieur") @db.VarChar(255)
+  shortUrl                  String                      @db.VarChar(500)
+  title                     String                      @db.VarChar(1000)
+  description               String?                     @default("Obtenez des devis gratuitement de la part de professionnels bas-rhinois pour les travaux que vous souhaitez engager chez vous.") @db.VarChar(1000)
+  keywords                  String?                     @default("devis, gratuit, bas-rhin, 67, artisan, entreprise, travaux, renovation, amenagement, batiment, appartement, maison, interieur, exterieur") @db.VarChar(1000)
   categories_devis_provider categories_devis_provider[]
   conditions                conditions[]
   contact                   contact[]
