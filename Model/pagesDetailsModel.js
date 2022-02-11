@@ -38,6 +38,7 @@ const findOneByUrl = async (url) => {
 };
 
 const updatePagesRow = async (id, title, url) => {
+  console.log('titlepage', title);
   const result = await prisma.pages.update({
     where: {
       id: id,

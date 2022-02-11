@@ -1,5 +1,5 @@
 const { BadRequestError } = require('../Middlewares/errors/errors-types');
-const { postCategory, deleteRow } = require('../Model/categoriesModel');
+const { postCategory, deleteRow, updateRow } = require('../Model/categoriesModel');
 const { findOneByUrl, updatePagesRow, createPagesRow } = require('../Model/pagesDetailsModel');
 
 const createCategory = async (req, res) => {
@@ -17,13 +17,11 @@ const deleteCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
   const data = req.body;
-  console.log('data', data);
   const result = data.map(async (elt) => {
     const shortUrl = await elt.title.replace(/ - /g, '-').replace(/ /g, '-');
-    console.log('short', shortUrl);
+    await updateRow(elt);
     await findOneByUrl(shortUrl).then((url) => {
       if (url) {
-        console.log('url', url);
         updatePagesRow(url.id, elt.title, shortUrl);
       } else {
         createPagesRow(elt.title, shortUrl);

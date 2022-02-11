@@ -2,11 +2,11 @@ const { findForm } = require('../Model/formDevisModel');
 
 const getForm = async (req, res) => {
   const category = req.params.category;
-  if (category === 'devis-divers') {
+  if (category === 'Devis-Divers') {
     const defaultData = await findForm(category);
     res.status(200).json(defaultData);
   } else {
-    const defaultData = await findForm('devis-divers');
+    const defaultData = await findForm('Devis-Divers');
     const data = await findForm(category);
     if (!data.length) {
       res.status(200).json(defaultData);
